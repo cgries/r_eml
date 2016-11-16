@@ -3,7 +3,7 @@ library("rmarkdown")
 
 title <- "LAGOS - Lake  nitrogen, phosphorus, and stoichiometry data and geospatial data for lakes in a 17-state region of the U.S."
 pubDate <- "2016"
-abstract <- as(set_TextType("abstract.docx"), "abstract")
+abstract <- as(set_TextType("eml332/abstract.docx"), "abstract")
 
 #start the dataset EML
 dataset <- new("dataset",
@@ -36,7 +36,7 @@ set_creator <- function(personinforow){
 }
 
 #read csv file with person information (givenName, surName, organization,  electronicMailAddress, userId)
-personinfo <- read.csv("creators.csv", header = TRUE, sep = ",", colClasses = "character")
+personinfo <- read.csv("eml332/creators.csv", header = TRUE, sep = ",", colClasses = "character")
 
 #run each row through the helper function to set creators
 dataset@creator <- as(lapply(1:dim(personinfo)[1], function(i)
@@ -78,7 +78,7 @@ keywordSet <- c(new("keywordSet",
 dataset@keywordSet <- new("ListOfkeywordSet", c(keywordSet))
 
 #add methods
-methods <- set_methods("methods.docx")
+methods <- set_methods("eml332/methods.docx")
 
 dataset@methods <- methods
 
@@ -122,7 +122,7 @@ project@relatedProject <- new("ListOfrelatedProject", c(relatedProject))
 dataset@project <- project
 
 #data table
-df <- read.csv("LAGOS_stoichiometry_forarchive.csv", header=TRUE, sep=",", quote="\"", as.is=TRUE)
+df <- read.csv("eml332/LAGOS_stoichiometry_forarchive.csv", header=TRUE, sep=",", quote="\"", as.is=TRUE)
 
 #set up the attribute metadata csv file
 rows <- ncol(df)
@@ -148,14 +148,14 @@ attributes$maximum <- sapply(df, max)
 #set what R thinks is integer to numeric
 attributes$columnClasses[attributes$columnClasses == "integer"] <- "numeric"
 #write the prepared template to a csv file
-write.csv(attributes, file = "collinsSarahmetadata.csv", row.names = FALSE)
+write.csv(attributes, file = "eml332/collinsSarahmetadata.csv", row.names = FALSE)
 
 #look at the standard units to get them right
 #standardUnits <- get_unitList()
 #View(standardUnits$units)
 
 #read the attributes file back in with all new entries
-attributes <- read.csv("collinsSarahmetadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
+attributes <- read.csv("eml332/collinsSarahmetadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
 
 # get the column classes into a vector as required by the set_attribute function
 col_classes <- attributes[,"columnClasses"]
@@ -193,4 +193,4 @@ eml <- new("eml",
 eml_validate(eml)
 
 #print out the eml xml file
-write_eml(eml, "332.xml")
+write_eml(eml, "eml332/332.xml")
