@@ -1,7 +1,19 @@
 library("EML")
 library("rmarkdown")
 
-title <- "LAGOS - Lake  nitrogen, phosphorus, and stoichiometry data and geospatial data for lakes in a 17-state region of the U.S."
+access <- new("access",
+              scope="document",
+              order="allowFirst",
+              authSystem="knb")
+allow1 <- new("allow",
+              principal = "uid=NTL,o=LTER,dc=ecoinformatics,dc=org",
+              permission = "all")
+allow2 <- new("allow",
+              principal = "public",
+              permission = "read")
+access@allow <- new("ListOfallow", c(allow1, allow2))
+
+title <- "LAGOS - Lake nitrogen, phosphorus, stoichiometry, and geospatial data for a 17-state region of the U.S."
 pubDate <- "2016"
 abstract <- as(set_TextType("eml332/abstract.docx"), "abstract")
 
@@ -76,6 +88,10 @@ keywordSet <- c(new("keywordSet",
                 "MSB", "Macrosystems Biology", "CSI", "NSF")))
 
 dataset@keywordSet <- new("ListOfkeywordSet", c(keywordSet))
+
+#intellectual Rights
+dataset@intellectualRights <- as(set_TextType("eml332/intellectualRights.docx"), "intellectualRights")
+
 
 #add methods
 methods <- set_methods("eml332/methods.docx")
@@ -185,8 +201,9 @@ dataset@dataTable <- new("ListOfdataTable", c(dataTable))
 
 #add to eml element 
 eml <- new("eml",
-           packageId = "knb-lter-ntl.332.2",
+           packageId = "knb-lter-ntl.332.5",
            system = "knb",
+           access = access,
            dataset = dataset)
 
 #validate the eml
