@@ -1,6 +1,18 @@
 library("EML")
 library("rmarkdown")
 
+access <- new("access",
+              scope="document",
+              order="allowFirst",
+              authSystem="knb")
+allow1 <- new("allow",
+              principal = "uid=NTL,o=LTER,dc=ecoinformatics,dc=org",
+              permission = "all")
+allow2 <- new("allow",
+              principal = "public",
+              permission = "read")
+access@allow <- new("ListOfallow", c(allow1, allow2))
+
 title <- "LAGOS-NE v.1.054.1 - Lake water quality time series and geophysical data from a 17-state region of the United States"
 pubDate <- "2016"
 abstract <- as(set_TextType("eml333/abstract.docx"), "abstract")
@@ -77,6 +89,9 @@ keywordSet <- c(new("keywordSet",
 
 dataset@keywordSet <- new("ListOfkeywordSet", c(keywordSet))
 
+#intellectual Rights
+dataset@intellectualRights <- as(set_TextType("eml333/intellectualRights.docx"), "intellectualRights")
+
 #add methods
 methods <- set_methods("eml333/methods.docx")
 
@@ -137,13 +152,13 @@ attributes$columnClasses[attributes$columnClasses == "integer"] <- "numeric"
 write.csv(attributes, file = "eml333/summermeanmetadata.csv", row.names = FALSE)
 
 #look at the standard units to get them right
-#standardUnits <- get_unitList()
-#View(standardUnits$units)
+standardUnits <- get_unitList()
+View(standardUnits$units)
 
 #read the attributes file back in with all new entries
 attributes <- read.csv("eml333/summermeanmetadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
 
-factors <- read.csv("eml333/variable_factor.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
+factors <- read.csv("eml333/summermean_factors.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
 
 # get the column classes into a vector as required by the set_attribute function
 col_classes <- attributes[,"columnClasses"]
@@ -203,8 +218,16 @@ write.csv(attributes, file = "eml333/geophysicalmetadata.csv", row.names = FALSE
 #standardUnits <- get_unitList()
 #View(standardUnits$units)
 
+#add custom units
+#define custom units
+unitType <- read.csv("eml333/unit_types.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
+custom_units <- read.csv("eml333/custom_units.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
+unitsList <- set_unitList(custom_units, unitType)
+
 #read the attributes file back in with all new entries
 attributes <- read.csv("eml333/geophysicalmetadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
+
+factors <- read.csv("eml333/geophysical_factors.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
 
 # get the column classes into a vector as required by the set_attribute function
 col_classes <- attributes[,"columnClasses"]
@@ -213,7 +236,7 @@ col_classes <- attributes[,"columnClasses"]
 attributes$columnClasses <- NULL
 
 #with the attributes data frames in place we can create the attributeList element - no factors need to be defined for this dataset 
-attributeList <- set_attributes(attributes, col_classes = col_classes)
+attributeList <- set_attributes(attributes, factors = factors, col_classes = col_classes)
 
 #physical parameter are all set for standard Microsoft csv file
 physical <- set_physical("LAGOS_supporting_geophysical.csv", numHeaderLines = "1", recordDelimiter = "\\r\\n")
@@ -236,7 +259,8 @@ dataset@dataTable <- new("ListOfdataTable", c(dataTable1, dataTable2))
 eml <- new("eml",
            packageId = "knb-lter-ntl.333.1",
            system = "knb",
-           dataset = dataset)
+           dataset = dataset,
+           additionalMetadata = as(unitsList, "additionalMetadata"))
 
 #validate the eml
 eml_validate(eml)
