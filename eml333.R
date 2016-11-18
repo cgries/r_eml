@@ -137,6 +137,8 @@ attributes <- data.frame(attributeName = character(rows),
                          columnClasses = character(rows),
                          minimum = character(rows),
                          maximum = character(rows),
+                         missingValueCode = character(rows),
+                         missingValueCodeExplanation = character(rows),
                          stringsAsFactors = FALSE)
 
 #get some metadata from data frame
@@ -144,8 +146,8 @@ attributes <- data.frame(attributeName = character(rows),
 attributes$attributeName <- names(df)
 #get the data types for each column
 attributes$columnClasses <- sapply(df, class)
-attributes$minimum <- sapply(df, min)
-attributes$maximum <- sapply(df, max)
+attributes$minimum <- sapply(df, min, na.rm = TRUE)
+attributes$maximum <- sapply(df, max, na.rm = TRUE)
 #set what R thinks is integer to numeric
 attributes$columnClasses[attributes$columnClasses == "integer"] <- "numeric"
 #write the prepared template to a csv file
@@ -156,7 +158,7 @@ standardUnits <- get_unitList()
 View(standardUnits$units)
 
 #read the attributes file back in with all new entries
-attributes <- read.csv("eml333/summermeanmetadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
+attributes <- read.csv("eml333/summermeanmetadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE, na.strings = "")
 
 factors <- read.csv("eml333/summermean_factors.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
 
@@ -200,6 +202,8 @@ attributes <- data.frame(attributeName = character(rows),
                          columnClasses = character(rows),
                          minimum = character(rows),
                          maximum = character(rows),
+                         missingValueCode = character(rows),
+                         missingValueCodeExplanation = character(rows),
                          stringsAsFactors = FALSE)
 
 #get some metadata from data frame
@@ -225,7 +229,7 @@ custom_units <- read.csv("eml333/custom_units.csv", header = TRUE, sep = ",", qu
 unitsList <- set_unitList(custom_units, unitType)
 
 #read the attributes file back in with all new entries
-attributes <- read.csv("eml333/geophysicalmetadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
+attributes <- read.csv("eml333/geophysicalmetadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE, na.strings = "")
 
 factors <- read.csv("eml333/geophysical_factors.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
 
