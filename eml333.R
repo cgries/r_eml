@@ -261,8 +261,9 @@ dataset@dataTable <- new("ListOfdataTable", c(dataTable1, dataTable2))
 
 #add to eml element 
 eml <- new("eml",
-           packageId = "knb-lter-ntl.333.1",
+           packageId = "knb-lter-ntl.333.3",
            system = "knb",
+           access = access,
            dataset = dataset,
            additionalMetadata = as(unitsList, "additionalMetadata"))
 
