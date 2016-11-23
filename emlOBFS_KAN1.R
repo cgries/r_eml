@@ -169,13 +169,12 @@ attributes$columnClasses <- NULL
 #with the attributes data frames in place we can create the attributeList element - no factors need to be defined for this dataset 
 attributeList <- set_attributes(attributes, factors = factors, col_classes = col_classes)
 
-#physical parameter are all set for standard Microsoft csv file
-physical <- set_physical("E1 Plant Biomass 6 16.csv", numHeaderLines = "1", recordDelimiter = "\\r\\n")
+#physical parameter for standard Microsoft csv file
+physical <- set_physical("E1 Plant Biomass 6 16.csv", 
+                         numHeaderLines = "1", 
+                         recordDelimiter = "\\r\\n",
+                         url = "https://foster.ku.edu/sites/foster.ku.edu/files/files/E1%20Plant%20Biomass%206%2016.csv")
 
-distribution <- new("distribution",
-                    online = new("online",
-                                 url = "https://foster.ku.edu/sites/foster.ku.edu/files/files/E1%20Plant%20Biomass%206%2016.csv"))
-physical@distribution <- new("ListOfdistribution", c(distribution))
 
 #pull to gether information for the dataTable
 dataTable1 <- new("dataTable",
@@ -186,7 +185,7 @@ dataTable1 <- new("dataTable",
 
 
 #data table LAGOS_supporting_geophysical.csv
-df <- read.csv("emlobfs1/E1_Plant_Species_Compostion_6_16.csv", header=TRUE, sep=",", quote="\"", as.is = TRUE, na.strings = "NA")
+df <- read.csv("emlobfs1/E1_Plant_Species_composition_6_16_long.csv", header=TRUE, sep=",", quote="\"", as.is = TRUE, na.strings = "NA")
 
 #set up the attribute metadata csv file
 rows <- ncol(df)
@@ -216,20 +215,10 @@ attributes$columnClasses[attributes$columnClasses == "integer"] <- "numeric"
 #write the prepared template to a csv file
 write.csv(attributes, file = "emlobfs1/E1_2metadata.csv", row.names = FALSE)
 
-#look at the standard units to get them right
-#standardUnits <- get_unitList()
-#View(standardUnits$units)
-
-#add custom units
-#define custom units
-unitType <- read.csv("eml333/unit_types.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
-custom_units <- read.csv("eml333/custom_units.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
-unitsList <- set_unitList(custom_units, unitType)
-
 #read the attributes file back in with all new entries
 attributes <- read.csv("emlobfs1/E1_2metadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE, na.strings = "")
 
-factors <- read.csv("eml333/geophysical_factors.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
+factors <- read.csv("emlobfs1/E1_2factors.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
 
 # get the column classes into a vector as required by the set_attribute function
 col_classes <- attributes[,"columnClasses"]
@@ -241,12 +230,10 @@ attributes$columnClasses <- NULL
 attributeList <- set_attributes(attributes, factors = factors, col_classes = col_classes)
 
 #physical parameter are all set for standard Microsoft csv file
-physical <- set_physical("LAGOS_supporting_geophysical.csv", numHeaderLines = "1", recordDelimiter = "\\r\\n")
-
-distribution <- new("distribution",
-                    online = new("online",
-                                 url = "https://lter6.limnology.wisc.edu/sites/default/files/data/LAGOS_supporting_geophysical.csv"))
-physical@distribution <- new("ListOfdistribution", c(distribution))
+physical <- set_physical("E1_Plant_Species_composition_6_16_long.csv", 
+                         numHeaderLines = "1", 
+                         recordDelimiter = "\\r\\n",
+                         url = "https://lter6.limnology.wisc.edu/sites/default/files/data/E1_Plant_Species_composition_6_16_long.csv")
 
 #pull to gether information for the dataTable
 dataTable2 <- new("dataTable",
@@ -259,14 +246,13 @@ dataset@dataTable <- new("ListOfdataTable", c(dataTable1, dataTable2))
 
 #add to eml element 
 eml <- new("eml",
-           packageId = "knb-lter-ntl.333.3",
-           system = "knb",
+           packageId = "edi.1.1",
+           system = "edi",
            access = access,
-           dataset = dataset,
-           additionalMetadata = as(unitsList, "additionalMetadata"))
+           dataset = dataset)
 
 #validate the eml
 eml_validate(eml)
 
 #print out the eml xml file
-write_eml(eml, "eml333/333.xml")
+write_eml(eml, "emlobfs1/edi1.xml")
