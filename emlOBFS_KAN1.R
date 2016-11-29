@@ -91,7 +91,7 @@ dataset@keywordSet <- new("ListOfkeywordSet", c(keywordSet))
 dataset@intellectualRights <- as(set_TextType("emlobfs1/intellectualRights.md"), "intellectualRights")
 
 #add methods
-methods <- set_methods("emlobfs1/E1Methods.docs")
+methods <- set_methods("emlobfs1/E1Methods.docx")
 
 dataset@methods <- methods
 
