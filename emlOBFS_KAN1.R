@@ -83,12 +83,12 @@ dataset@contact <- new("ListOfcontact", c(dataset_contact)) #, NTL_contact
 
 #add keywords
 keywordSet <- c(new("keywordSet",
-                    keyword = c("LTREB",  "NSF")))
+                    keyword = c("LTREB", "NSF", "plant community", "succession", "fertilization")))
 
 dataset@keywordSet <- new("ListOfkeywordSet", c(keywordSet))
 
 #intellectual Rights
-dataset@intellectualRights <- as(set_TextType("emlobfs1/intellectualRights.docx"), "intellectualRights")
+dataset@intellectualRights <- as(set_TextType("emlobfs1/intellectualRights.md"), "intellectualRights")
 
 #add methods
 methods <- set_methods("emlobfs1/E1Methods.docx")
@@ -120,36 +120,36 @@ project <- new("project",
 
 dataset@project <- project
 
-#data table LAGOS_summer_meanvals.csv
-df <- read.csv("emlobfs1/E1_Plant_Biomass_6_16.csv", header=TRUE, sep=",", quote="\"", as.is=TRUE, na.strings = "NA")
-
-#set up the attribute metadata csv file
-rows <- ncol(df)
-
-attributes <- data.frame(attributeName = character(rows),
-                         formatString = character(rows),
-                         unit = character(rows),
-                         numberType = character(rows),
-                         definition = character(rows),
-                         attributeDefinition = character(rows),
-                         columnClasses = character(rows),
-                         minimum = character(rows),
-                         maximum = character(rows),
-                         missingValueCode = character(rows),
-                         missingValueCodeExplanation = character(rows),
-                         stringsAsFactors = FALSE)
-
-#get some metadata from data frame
-#add the column names to the template file
-attributes$attributeName <- names(df)
-#get the data types for each column
-attributes$columnClasses <- sapply(df, class)
-attributes$minimum <- sapply(df, min, na.rm = TRUE)
-attributes$maximum <- sapply(df, max, na.rm = TRUE)
-#set what R thinks is integer to numeric
-attributes$columnClasses[attributes$columnClasses == "integer"] <- "numeric"
-#write the prepared template to a csv file
-write.csv(attributes, file = "emlobfs1/E1_1metadata.csv", row.names = FALSE)
+# #data table LAGOS_summer_meanvals.csv
+# df <- read.csv("emlobfs1/E1_Plant_Biomass_6_16.csv", header=TRUE, sep=",", quote="\"", as.is=TRUE, na.strings = "NA")
+# 
+# #set up the attribute metadata csv file
+# rows <- ncol(df)
+# 
+# attributes <- data.frame(attributeName = character(rows),
+#                          formatString = character(rows),
+#                          unit = character(rows),
+#                          numberType = character(rows),
+#                          definition = character(rows),
+#                          attributeDefinition = character(rows),
+#                          columnClasses = character(rows),
+#                          minimum = character(rows),
+#                          maximum = character(rows),
+#                          missingValueCode = character(rows),
+#                          missingValueCodeExplanation = character(rows),
+#                          stringsAsFactors = FALSE)
+# 
+# #get some metadata from data frame
+# #add the column names to the template file
+# attributes$attributeName <- names(df)
+# #get the data types for each column
+# attributes$columnClasses <- sapply(df, class)
+# attributes$minimum <- sapply(df, min, na.rm = TRUE)
+# attributes$maximum <- sapply(df, max, na.rm = TRUE)
+# #set what R thinks is integer to numeric
+# attributes$columnClasses[attributes$columnClasses == "integer"] <- "numeric"
+# #write the prepared template to a csv file
+# write.csv(attributes, file = "emlobfs1/E1_1metadata.csv", row.names = FALSE)
 
 #look at the standard units to get them right
 standardUnits <- get_unitList()
@@ -184,36 +184,36 @@ dataTable1 <- new("dataTable",
                   attributeList = attributeList)
 
 
-#data table LAGOS_supporting_geophysical.csv
-df <- read.csv("emlobfs1/E1_Plant_Species_composition_6_16_long.csv", header=TRUE, sep=",", quote="\"", as.is = TRUE, na.strings = "NA")
-
-#set up the attribute metadata csv file
-rows <- ncol(df)
-
-attributes <- data.frame(attributeName = character(rows),
-                         formatString = character(rows),
-                         unit = character(rows),
-                         numberType = character(rows),
-                         definition = character(rows),
-                         attributeDefinition = character(rows),
-                         columnClasses = character(rows),
-                         minimum = character(rows),
-                         maximum = character(rows),
-                         missingValueCode = character(rows),
-                         missingValueCodeExplanation = character(rows),
-                         stringsAsFactors = FALSE)
-
-#get some metadata from data frame
-#add the column names to the template file
-attributes$attributeName <- names(df)
-#get the data types for each column
-attributes$columnClasses <- sapply(df, class)
-attributes$minimum <- sapply(df, min, na.rm = TRUE)
-attributes$maximum <- sapply(df, max, na.rm = TRUE)
-#set what R thinks is integer to numeric
-attributes$columnClasses[attributes$columnClasses == "integer"] <- "numeric"
-#write the prepared template to a csv file
-write.csv(attributes, file = "emlobfs1/E1_2metadata.csv", row.names = FALSE)
+# #second data table
+# df <- read.csv("emlobfs1/E1_Plant_Species_composition_6_16_long.csv", header=TRUE, sep=",", quote="\"", as.is = TRUE, na.strings = "NA")
+# 
+# #set up the attribute metadata csv file
+# rows <- ncol(df)
+# 
+# attributes <- data.frame(attributeName = character(rows),
+#                          formatString = character(rows),
+#                          unit = character(rows),
+#                          numberType = character(rows),
+#                          definition = character(rows),
+#                          attributeDefinition = character(rows),
+#                          columnClasses = character(rows),
+#                          minimum = character(rows),
+#                          maximum = character(rows),
+#                          missingValueCode = character(rows),
+#                          missingValueCodeExplanation = character(rows),
+#                          stringsAsFactors = FALSE)
+# 
+# #get some metadata from data frame
+# #add the column names to the template file
+# attributes$attributeName <- names(df)
+# #get the data types for each column
+# attributes$columnClasses <- sapply(df, class)
+# attributes$minimum <- sapply(df, min, na.rm = TRUE)
+# attributes$maximum <- sapply(df, max, na.rm = TRUE)
+# #set what R thinks is integer to numeric
+# attributes$columnClasses[attributes$columnClasses == "integer"] <- "numeric"
+# #write the prepared template to a csv file
+# write.csv(attributes, file = "emlobfs1/E1_2metadata.csv", row.names = FALSE)
 
 #read the attributes file back in with all new entries
 attributes <- read.csv("emlobfs1/E1_2metadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE, na.strings = "")
@@ -237,8 +237,8 @@ physical <- set_physical("E1_Plant_Species_composition_6_16_long.csv",
 
 #pull to gether information for the dataTable
 dataTable2 <- new("dataTable",
-                  entityName = "LAGOS_supporting_geophysical.csv",
-                  entityDescription = "This dataset includes information geophysical conditions surrounding the lakes.",
+                  entityName = "E1_Plant_Species_composition_6_16_long.csv",
+                  entityDescription = "This file contains data on plant species composition (abundance of each component species expressed in % cover) in each of the 96 experimental 4 x 5 m plots (2002-2015).",
                   physical = physical,
                   attributeList = attributeList)
 
