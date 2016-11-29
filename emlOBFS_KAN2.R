@@ -104,7 +104,7 @@ project <- new("project",
 
 dataset@project <- project
 
-# #data table LAGOS_summer_meanvals.csv
+# #first data table
 # df <- read.csv("emlobfs1/E2 Plant Biomass 6 16.csv", header=TRUE, sep=",", quote="\"", as.is=TRUE, na.strings = "NA")
 # 
 # #set up the attribute metadata csv file
