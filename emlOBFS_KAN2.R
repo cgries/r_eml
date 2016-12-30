@@ -85,8 +85,8 @@ enddate <- "2015-07-31"
 geographicDescription <- "the University of Kansas Field Station (KUFS) located in eastern Kansas in the prairie-forest ecotone region of the central USA. KUFS and is located just north of Lawrence, Kansas, USA."
 coverage <- set_coverage(begin = begindate, end = enddate,
                          geographicDescription = geographicDescription,
-                         west = -95.1976, east = -95.1834,
-                         north = 39.0525, south = 39.0408)
+                         west = -95.249891, east = -95.134409,
+                         north = 39.085468, south = 38.995391)
 
 dataset@coverage <- coverage
 
@@ -217,7 +217,7 @@ attributeList <- set_attributes(attributes, factors = factors, col_classes = col
 physical <- set_physical("E2_Plant_Species_Composition_6_16_long.csv", 
                          numHeaderLines = "1", 
                          recordDelimiter = "\\r\\n",
-                         url = "https://lter6.limnology.wisc.edu/sites/default/files/data/E2_Plant_Species_Composition_6_16_long.csv")
+                         url = "https://lter.limnology.wisc.edu/sites/default/files/data/E2_Plant_Species_Composition_6_16_long.csv")
 
 #pull to gether information for the dataTable
 dataTable2 <- new("dataTable",
@@ -230,7 +230,7 @@ dataset@dataTable <- new("ListOfdataTable", c(dataTable1, dataTable2))
 
 #add to eml element 
 eml <- new("eml",
-           packageId = "edi.2.1",
+           packageId = "edi.2.2",
            system = "edi",
            access = access,
            dataset = dataset)

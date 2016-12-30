@@ -58,10 +58,10 @@ dataset@creator <- as(lapply(1:dim(personinfo)[1], function(i)
 #add contacts
 dc <- as.person("Bryan Foster <bfoster@ku.edu>")
 dataset_contact <- as(dc, "contact")
-dc_userId <- new("userId") 
-dc_userId@directory <- new("xml_attribute", "http://orcid.org")
-dc_userId@.Data <- "http://orcid.org/0000-0002-1210-059X"
-dataset_contact@userId <- new("ListOfuserId", c(dc_userId))
+# dc_userId <- new("userId") 
+# dc_userId@directory <- new("xml_attribute", "http://orcid.org")
+# dc_userId@.Data <- "http://orcid.org/0000-0002-1210-059X"
+# dataset_contact@userId <- new("ListOfuserId", c(dc_userId))
 
 # NTL_address <- new("address",
 #                    deliveryPoint = "Center for Limnology 680 North Park Str.",
@@ -101,15 +101,15 @@ enddate <- "2015-07-31"
 geographicDescription <- "the University of Kansas Field Station (KUFS) located in eastern Kansas in the prairie-forest ecotone region of the central USA. KUFS and is located just north of Lawrence, Kansas, USA."
 coverage <- set_coverage(begin = begindate, end = enddate,
                          geographicDescription = geographicDescription,
-                         west = -95.1976, east = -95.1834,
-                         north = 39.0525, south = 39.0408)
+                         west = -95.249891, east = -95.134409,
+                         north = 39.085468, south = 38.995391)
 
 dataset@coverage <- coverage
 
 #add project and funding
 
 rp_personnel <- as(dc, "personnel")
-rp_personnel@userId <- new("ListOfuserId", c(dc_userId))
+#rp_personnel@userId <- new("ListOfuserId", c(dc_userId))
 role <- new("role", "Principal Investigator")
 rp_personnel@role <- new("ListOfrole", c(role))
 
@@ -120,7 +120,7 @@ project <- new("project",
 
 dataset@project <- project
 
-# #data table LAGOS_summer_meanvals.csv
+# develop attribute metadata - uncomment if some changes need to be made, but mostly this involves changing the csv file
 # df <- read.csv("emlobfs1/E1_Plant_Biomass_6_16.csv", header=TRUE, sep=",", quote="\"", as.is=TRUE, na.strings = "NA")
 # 
 # #set up the attribute metadata csv file
@@ -152,8 +152,8 @@ dataset@project <- project
 # write.csv(attributes, file = "emlobfs1/E1_1metadata.csv", row.names = FALSE)
 
 #look at the standard units to get them right
-standardUnits <- get_unitList()
-View(standardUnits$units)
+#standardUnits <- get_unitList()
+#View(standardUnits$units)
 
 #read the attributes file back in with all new entries
 attributes <- read.csv("emlobfs1/E1_1metadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE, na.strings = "")
@@ -184,7 +184,7 @@ dataTable1 <- new("dataTable",
                   attributeList = attributeList)
 
 
-# #second data table
+# # develop attribute metadata - uncomment if some changes need to be made, but mostly this involves changing the csv file
 # df <- read.csv("emlobfs1/E1_Plant_Species_composition_6_16_long.csv", header=TRUE, sep=",", quote="\"", as.is = TRUE, na.strings = "NA")
 # 
 # #set up the attribute metadata csv file
@@ -233,7 +233,7 @@ attributeList <- set_attributes(attributes, factors = factors, col_classes = col
 physical <- set_physical("E1_Plant_Species_composition_6_16_long.csv", 
                          numHeaderLines = "1", 
                          recordDelimiter = "\\r\\n",
-                         url = "https://lter6.limnology.wisc.edu/sites/default/files/data/E1_Plant_Species_composition_6_16_long.csv")
+                         url = "https://lter.limnology.wisc.edu/sites/default/files/data/E1_Plant_Species_composition_6_16_long.csv")
 
 #pull to gether information for the dataTable
 dataTable2 <- new("dataTable",
@@ -246,7 +246,7 @@ dataset@dataTable <- new("ListOfdataTable", c(dataTable1, dataTable2))
 
 #add to eml element 
 eml <- new("eml",
-           packageId = "edi.1.1",
+           packageId = "edi.1.2",
            system = "edi",
            access = access,
            dataset = dataset)
