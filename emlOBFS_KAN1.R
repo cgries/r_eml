@@ -156,7 +156,8 @@ dataset@project <- project
 #View(standardUnits$units)
 
 #read the attributes file back in with all new entries
-attributes <- read.csv("emlobfs1/E1_1metadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE, na.strings = "")
+# !!!I accidentally overwrote this file - just edit the eml file from now on!!!
+#!!!attributes <- read.csv("emlobfs1/E1_1metadata.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE, na.strings = "")
 
 factors <- read.csv("emlobfs1/E1_1factors.csv", header = TRUE, sep = ",", quote = "\"", as.is = TRUE)
 
