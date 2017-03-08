@@ -217,7 +217,7 @@ dataset@dataTable <- new("ListOfdataTable", c(dataTable1))
 
 #add to eml element 
 eml <- new("eml",
-           packageId = "edi.4.1",
+           packageId = "edi.4.2",
            system = "edi",
            access = access,
            dataset = dataset)
@@ -226,5 +226,5 @@ eml <- new("eml",
 eml_validate(eml)
 
 #print out the eml xml file
-write_eml(eml, paste(workingdirectory,"edi4.xml", sep = "/" ))
+write_eml(eml, paste(workingdirectory,"edi4.2.xml", sep = "/" ))
 
